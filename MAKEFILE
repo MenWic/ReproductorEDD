@@ -1,0 +1,5 @@
+programa: Main.o
+	gcc -o programa Main.o
+
+Main.o:  Main.cpp Menu.h
+	gcc -c Main.cpp ./programa

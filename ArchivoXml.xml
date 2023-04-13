@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Insertar>
+	<cancion>
+		<Nombre>can1</Nombre>
+		<path>asdasdasd</path>
+	</cancion>
+	<cancion>
+		<Nombre>can2</Nombre>
+		<path>asdasdasdasd</path>
+	</cancion>
+	<cancion>
+		<Nombre>can3</Nombre>
+		<path>asdasdasd</path>
+	</cancion>
+	<cancion>
+		<Nombre>can4</Nombre>
+		<path>asdasdasd</path>
+	</cancion>
+	<cancion>
+		<Nombre>can5</Nombre>
+		<path>asdasdasd</path>
+	</cancion>
+	<cancion>
+		<Nombre>can6</Nombre>
+		<path>asdasd</path>
+	</cancion>
+</Insertar>

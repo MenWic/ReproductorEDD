@@ -12,9 +12,11 @@
 #include "Playlist.h"
 
 #include "NodoPlaylist.h"
-#include "ListaPlaylists.h" //Albergara las playlist que a su vez, contienen listas de canciones (Desarrollando)
+#include "ListaPlaylists.h" //Albergara las playlist que a su vez, contienen listas de canciones
+#include "CargaMasiva.h"
 
 using namespace std;
+// using namespace tinyxml2;
 
 /*	--------- INIT Declaracion de Metodos ---------	*/
 void pausa();
@@ -35,6 +37,12 @@ void listarPlaylist(ListaPlaylists *listaPlaylists);
 void agregarCancionesAPlaylist(ListaCancionesStore *listaCanciones, ListaPlaylists *listaPlaylists);
 void eliminarCancionesDePlaylist(ListaPlaylists *listaPlaylists);
 
+void menuReproduccion(ListaPlaylists *listaPlaylists);
+void tipoReproduccion(ListaPlaylists *listaPlaylists, int idPlaylist);
+
+void menuCargaMasiva();
+void leerArchivoXML();
+
 // void agregarPlaylist(ListaDobleCancionesPlaylist *ListaDobleCancionesPlaylist); //Implementado por crearPlaylist
 // void eliminarPlaylist(ListaDobleCancionesPlaylist *ListaDobleCancionesPlaylist); //Implementado por eliminarPlaylist
 /*	--------- FIN Declaracion de Metodos ---------	*/
@@ -43,19 +51,18 @@ void eliminarCancionesDePlaylist(ListaPlaylists *listaPlaylists);
 int main()
 {
 	// int reproducir();
-
 	ListaCancionesStore *listaCanciones = new ListaCancionesStore(); // Lista de Canciones en la Store
 	ListaPlaylists *listaPlaylists = new ListaPlaylists();			 // Lista de Playlist creadas
-	// ListaDobleCancionesPlaylist *listaCancionesEnPlaylist = new ListaDobleCancionesPlaylist(); //Lista de canciones dentro de Playlist
 
 	bool bandera = false;
 	char tecla;
 
 	do
 	{
-		system("cls");
-		cout << "\tR E P R O D U C T O R" << endl;
-		cout << "\t- - - - - - - - - - -" << endl
+		//system("cls");
+		cout << "\t- - - - - - - - - - - - - -" << endl;
+		cout << "\t + R E P R O D U C T O R +" << endl;
+		cout << "\t- - - - - - - - - - - - - -" << endl
 			 << endl;
 		cout << "\t1. Canciones" << endl;
 		cout << "\t2. Playlist's" << endl;
@@ -71,27 +78,27 @@ int main()
 		case '1':
 			system("cls");
 			menuCanciones(listaCanciones);
-
-			pausa();
+			//pausa();
 			break;
 
 		case '2':
 			system("cls");
 			menuPlaylists(listaPlaylists, listaCanciones);
-
-			pausa();
+			//pausa();
 			break;
 
 		case '3':
 			system("cls");
-			cout << "FASE NO TERMINADA (EN DESARROLLO)...\n";
-			pausa();
+			cout << "Nota: Fase aun en desarrollo" << endl;
+			menuReproduccion(listaPlaylists);
+			//pausa();
 			break;
 
 		case '4':
 			system("cls");
-			cout << "FASE MENOS TERMINADA (X).\n";
-			pausa();
+			cout << "Nota: Fase aun en desarrollo" << endl;
+			menuCargaMasiva();
+			//pausa();
 			break;
 
 		case '5':
@@ -101,7 +108,7 @@ int main()
 
 		default:
 			system("cls");
-			cout << "La Opcion no es valida...\a" << endl;
+			cout << "La opcion ingresada no es valida..." << endl;
 			pausa();
 			break;
 		}
@@ -116,7 +123,8 @@ int main()
 void menuCanciones(ListaCancionesStore *listaCanciones)
 {
 	char opc;
-	system("cls");
+	//system("cls"); 	//BORRAR LOS CLS PREVIO A CADA MENU
+	cout << "\t- - - - - -" << endl;
 	cout << "\t CANCIONES " << endl;
 	cout << "\t- - - - - -" << endl
 		 << endl;
@@ -124,7 +132,7 @@ void menuCanciones(ListaCancionesStore *listaCanciones)
 	cout << "\t2. Eliminar Cancion";
 	cout << "\t3. Buscar Cancion";
 	cout << "\t4. Listar Canciones";
-	cout << "\t5. Regrsar al Menu" << endl
+	cout << "\t5. Regresar al Menu" << endl
 		 << endl;
 	cout << "\tElige una opcion: ";
 	cin >> opc;
@@ -134,19 +142,26 @@ void menuCanciones(ListaCancionesStore *listaCanciones)
 		system("cls");
 	case '1':
 		insertarCancionAStore(listaCanciones);
-		// pausa();
+		//pausa();
 		break;
 	case '2':
 		eliminarCancionDeStore(listaCanciones);
+		//pausa();
 		break;
 	case '3':
 		buscarCancionPorNombre(listaCanciones);
+		pausa();
 		break;
 	case '4':
 		listaCanciones->listarCanciones();
+		//pausa();
+		break;
+	case '5':
+		//pausa();
 		break;
 
 	default:
+		cout << "La opcion ingresada no es valida..." << endl;
 		break;
 	}
 }
@@ -161,17 +176,16 @@ void insertarCancionAStore(ListaCancionesStore *listaCanciones)
 
 	while (bandera)
 	{
-		cout << "\n\tINSERTAR CANCION " << endl;
+		system("cls");
+		cout << "\n\t * INSERTAR CANCION *" << endl;
 		cout << "Nombre de Cancion: ";
-		// cin >> nombre;
 		cin.ignore();
 		getline(cin, nombre);
 		cout << "Path de Cancion: ";
-		// cin >> path;
 		cin.ignore();
 		getline(cin, path);
 
-		if (nombre != "" && path != "")
+		if (nombre != "" || path != "")
 		{
 			bandera = false;
 		}
@@ -191,9 +205,10 @@ void eliminarCancionDeStore(ListaCancionesStore *listaCanciones)
 	int index;
 
 	system("cls");
-	cout << "\n\t ELIMINAR CANCION " << endl;
+	cout << "\n\t * ELIMINAR CANCION *" << endl;
 	listaCanciones->listarCanciones(); // Mostrar canciones para facilitar datos previo a eliminacion
 
+	cout << "Seleccionar cancion a eliminar" << endl;
 	cout << "1. Borrar por nombre" << endl
 		 << "2. Borrar por id" << endl;
 	cin >> x;
@@ -201,6 +216,7 @@ void eliminarCancionDeStore(ListaCancionesStore *listaCanciones)
 	switch (x)
 	{
 	case '1':
+		// system("cls");
 		cout << "Ingrese el nombre de la cancion: ";
 		// cin >> nombre;
 		cin.ignore();
@@ -245,7 +261,7 @@ void eliminarCancionDeStore(ListaCancionesStore *listaCanciones)
 		break;
 
 	default:
-		cout << "Opcion no valida" << endl;
+		cout << "La opcion ingresada no es valida..." << endl;
 		break;
 	}
 }
@@ -258,9 +274,8 @@ void buscarCancionPorNombre(ListaCancionesStore *listaCanciones)
 
 	while (bandera)
 	{
-		cout << "\n\t BUSCAR CANCION" << endl;
-		cout << "Nombre de Cancion: " << endl;
-		// cin >> nombre;
+		cout << "\n\t * BUSCAR CANCION *" << endl;
+		cout << "Ingrese el nombre de la cancion" << endl;
 		cin.ignore();
 		getline(cin, nombre);
 
@@ -270,7 +285,7 @@ void buscarCancionPorNombre(ListaCancionesStore *listaCanciones)
 		}
 		else
 		{
-			cout << "Parametros vacios o nulos" << endl;
+			cout << "Ingrese un nombre (no deje vacio por favor)" << endl;
 		}
 	}
 	listaCanciones->buscarCancionPorNombre(nombre);
@@ -282,14 +297,14 @@ void buscarCancionPorNombre(ListaCancionesStore *listaCanciones)
 void menuPlaylists(ListaPlaylists *listaPlaylists, ListaCancionesStore *listaCanciones)
 {
 	char opc;
-
+	cout << "\t- - - - - -" << endl;
 	cout << "\t PLAYLIST " << endl;
 	cout << "\t- - - - - -" << endl
 		 << endl;
 	cout << "\t1. Crear Playlist"; // Listo
 	cout << "\t2. Eliminar Playlist";
 	cout << "\t3. Actualizar Playlist";
-	cout << "\t4. Listar Playlists credas" << endl; // Listo
+	cout << "\t4. Listar Playlists credas\n";		// Listo
 	cout << "\t5. Agregar canciones a Playlist";	// Listo
 	cout << " \t6. Eliminar canciones de Playlist"; // Listo
 	cout << "\t7. Regrsar al Menu" << endl;
@@ -318,8 +333,12 @@ void menuPlaylists(ListaPlaylists *listaPlaylists, ListaCancionesStore *listaCan
 	case '6':
 		eliminarCancionesDePlaylist(listaPlaylists);
 		break;
+	case '7':
+		pausa();
+		break;
 
 	default:
+		cout << "La opcion ingresada no es valida..." << endl;
 		break;
 	}
 }
@@ -332,20 +351,20 @@ void crearPlaylist(ListaPlaylists *listaPlaylists, ListaCancionesStore *listaCan
 	string nombre;
 	string descripcion;
 
-	cout << "\n\t CREAR PLAYLIST " << endl;
-	cout << "Ingrese el nombre de la playlist" << endl;
-	// cin >> nombre;
+	cout << "\n\t * CREAR PLAYLIST *" << endl;
+	cout << "Ingrese los datos de la nueva Playlist" << endl;
+	cout << "Nombre de la playlist: ";
 	cin.ignore();
 	getline(cin, nombre);
-	cout << "Ingrese descripcion de la playlist" << endl;
-	// cin >> descripcion;
+	cout << "Descripcion de la playlist: ";
 	cin.ignore();
 	getline(cin, descripcion);
 
 	while (true)
 	{
 		listaCanciones->listarCanciones();
-		cout << "Ingrese Id de la cancion que agregara a la Playlist\n(-1. Salir y Guardar):";
+		cout << "(Opcion \"-1\" para Salir y Guardar)" << endl;
+		cout << "Ingrese el Id de la cancion que agregara a la nueva Playlist: ";
 		cin >> id;
 
 		if (id == -1)
@@ -369,39 +388,37 @@ void eliminarPlaylist(ListaPlaylists *listaPlaylists)
 	int idPLayList;
 	// int idCancion;
 
-	cout << "\n\t ELIMINAR PLAYLIST " << endl;
-	listaPlaylists->listarPlayList();
-	cout << "Ingrese el ID de la Playlist que desea eliminar de la lista: " << endl;
+	cout << "\n\t * ELIMINAR PLAYLIST *" << endl;
+	listaPlaylists->recorrerListaDePlayList();
+	cout << "Ingrese el Id de la Playlist que desea eliminar de la Playlist: ";
 	cin >> idPLayList;
 
 	Playlist *playlist = listaPlaylists->buscarPlayListPorIndex(idPLayList);
 	listaPlaylists->eliminarPlayListPorIndex(idPLayList);
 }
 
-// PENDIENTEEEEEEEEEEEEE
+// Funcion que actualiza los datos de una Playlist creada previamente
 void actualizarPlaylist(ListaPlaylists *listaPlaylists)
 {
 	int idPLayList;
 	string nuevoNombrePlaylist;
 	string nuevaDescripcionPlaylist;
-	// int idCancion;
 
-	cout << "\n\t ACTUALIZAR PLAYLIST " << endl;
-	listaPlaylists->listarPlayList();
-	cout << "Ingrese el ID de la Playlist que desea actualizar de la lista: " << endl;
+	cout << "\n\t * ACTUALIZAR PLAYLIST *" << endl;
+	listaPlaylists->recorrerListaDePlayList();
+	cout << "Ingrese el Id de la Playlist que desea actualizar: " << endl;
 	cin >> idPLayList;
-	cout << "Ingrese el nuevo nombre de la Playlist: " << endl;
-	// cin >> nuevoNombrePlaylist;
+	cout << "Ingrese los nuevos datos para la Playlist seleccionada";
+	cout << "Nuevo nombre de Playlist: ";
 	cin.ignore();
 	getline(cin, nuevoNombrePlaylist);
-	cout << "Ingrese la nueva descripcion de la Playlist: " << endl;
-	// cin >> nuevaDescripcionPlaylist;
+	cout << "Nueva descripcion de Playlist: ";
 	cin.ignore();
 	getline(cin, nuevaDescripcionPlaylist);
 
-	if (nuevoNombrePlaylist == "" || nuevaDescripcionPlaylist == "")
+	if ((nuevoNombrePlaylist == "" || nuevaDescripcionPlaylist == "") || (nuevoNombrePlaylist == "" && nuevaDescripcionPlaylist == ""))
 	{
-		cout << "No se actualizo la Playlist (no se aceptan datos vacios)" << endl;
+		cout << "No se actualizo la Playlist (Ambos datos deben ser cambiados)" << endl;
 	}
 	else
 	{
@@ -414,9 +431,9 @@ void listarPlaylist(ListaPlaylists *listaPlaylists)
 {
 	int id;
 
-	cout << "\n\t LISTAR PLAYLIST'S " << endl;
-	listaPlaylists->listarPlayList();
-	cout << "Ingrese el ID de la Playlist a desplegar: " << endl;
+	cout << "\n\t * LISTAR PLAYLIST'S *" << endl;
+	listaPlaylists->recorrerListaDePlayList();
+	cout << "Ingrese el Id de la Playlist a desplegar: ";
 	cin >> id;
 	Playlist *playlist = listaPlaylists->buscarPlayListPorIndex(id);
 
@@ -427,7 +444,7 @@ void listarPlaylist(ListaPlaylists *listaPlaylists)
 	}
 	else
 	{
-		cout << "No existe la playlist" << endl;
+		cout << "La Playlist esta vacia" << endl;
 	}
 }
 
@@ -437,9 +454,10 @@ void agregarCancionesAPlaylist(ListaCancionesStore *listaCanciones, ListaPlaylis
 	int idPLayList;
 	int idCancion;
 
-	cout << "\n\t AGREGAR CANCION A PLAYLIST" << endl;
-	listaPlaylists->listarPlayList();
-	cout << "Ingrese el ID de la Playlist a la que desea agregar canciones: " << endl;
+	cout << "\n\t * AGREGAR CANCION A PLAYLIST *" << endl;
+	cout << "Eliga por Id, la Playlist a la que desea agregar canciones: " << endl;
+	listaPlaylists->recorrerListaDePlayList();
+	cout << "Id de Playlist: ";
 	cin >> idPLayList;
 
 	Playlist *playlist = listaPlaylists->buscarPlayListPorIndex(idPLayList);
@@ -477,7 +495,7 @@ void eliminarCancionesDePlaylist(ListaPlaylists *listaPlaylists)
 	int idCancion;
 
 	cout << "\n\t ELIMINAR CANCION DE PLAYLIST" << endl;
-	listaPlaylists->listarPlayList();
+	listaPlaylists->recorrerListaDePlayList();
 	cout << "Ingrese el ID de la Playlist a la que desea eliminar canciones: " << endl;
 	cin >> idPLayList;
 
@@ -501,6 +519,103 @@ void eliminarCancionesDePlaylist(ListaPlaylists *listaPlaylists)
 	else
 	{
 		cout << "No existe la playlist" << endl;
+	}
+}
+
+/************************************
+ * Metodos Principales: REPRODUCCION *
+ ************************************/
+
+void menuReproduccion(ListaPlaylists *listaPlaylist)
+{
+	int idPlaylist;
+
+	listaPlaylist->recorrerListaDePlayList();
+
+	cout << "Elige la playlist que deseas reproducir (Id):";
+	cin >> idPlaylist;
+	tipoReproduccion(listaPlaylist, idPlaylist);
+}
+
+void tipoReproduccion(ListaPlaylists *listaPlaylists, int idPlaylist)
+{
+	char opc;
+	Playlist *pl;
+	cout << "\t- - - - - - - " << endl;
+	cout << "\t REPRODUCCION " << endl;
+	cout << "\t- - - - - - - " << endl
+		 << endl;
+	cout << "Elige la forma en que desea reproducri su Playlist" << endl;
+	cout << " 1. Reproduccion normal" << endl;
+	cout << " 2. Reproduccion repetida (bucle)" << endl;
+	cout << " 3. Salir" << endl;
+	cout << "\tElige una opcion: ";
+	cin >> opc;
+
+	switch (opc)
+	{
+	case '1':
+	{
+		system("cls");
+		pl = listaPlaylists->buscarPlayListPorIndex(idPlaylist);
+		pl->getListaCancionesPlaylists()->reproducirNormal();
+	}
+	break;
+
+	case '2':
+	{
+		pl = listaPlaylists->buscarPlayListPorIndex(idPlaylist);
+		pl->getListaCancionesPlaylists()->reproducirInfinita();
+		// reproduccionCircular(listaPlaylists); // listaCancionesFZ
+	}
+	break;
+	case '3':
+	{
+		system("cls");
+	}
+
+	default:
+		cout << "Opcion no valida" << endl;
+		break;
+	}
+}
+
+/***************************
+ *	Funciones Carga Masiva *
+ ***************************/
+void menuCargaMasiva()
+{
+	char opc;
+	cout << "\t- - - - - - - " << endl;
+	cout << "\t CARGA MASIVA " << endl;
+	cout << "\t- - - - - - - " << endl
+		 << endl;
+	cout << "Lectura de Archivo (.xml)" << endl;
+	cout << " 1. Cargar y leer archivo" << endl;
+	cout << " 2. Regresar al Menu" << endl;
+	cout << "Elige una opcion: ";
+	cin >> opc;
+
+	switch (opc)
+	{
+	case '1':
+	{
+		system("cls");
+		leerArchivoXML();
+	}
+	break;
+
+	case '2':
+	{
+		system("cls");
+		//pausa();
+		break;
+	}
+	break;
+
+	default:
+		cout << "La opcion ingresada no es valida..." << endl;
+		break;
 	}
 }
 

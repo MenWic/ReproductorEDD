@@ -16,4 +16,5 @@ struct NodoCancion
         this->cancion = cancion;
         this->id = id;
     }
+
 };

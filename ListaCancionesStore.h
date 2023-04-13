@@ -17,7 +17,7 @@ struct ListaCancionesStore
 
     /*****************************************
      * Metodos Principales de Lista Enlazada *
-    ******************************************/
+     ******************************************/
     // Function: @agregarNodo(), Metodo para incersion de nodos a la Lista Enlazada
     void agregarCancion(string nombre, string path)
     {
@@ -36,7 +36,7 @@ struct ListaCancionesStore
             }
             nodo_actual->siguiente = nuevo_nodo; // Al haber encontrado el NULL, creamos o setteamos nuestro nodo a crear
         }
-        cout << "Se agrego la cancion" << endl;
+        cout << "\"Se agrego la cancion a la Store\"" << endl;
         size++;
     }
 
@@ -129,7 +129,7 @@ struct ListaCancionesStore
         {
             if (nodo_actual->id == index)
             {
-                cout << "Nombre: " << nodo_actual->cancion->getNombre() << ", Path: " << nodo_actual->cancion->getPath() << ", Indice en Store: " << nodo_actual->id << endl;
+                cout << "Id en Store: " << nodo_actual->id << ", Nombre: " << nodo_actual->cancion->getNombre() << ", Path: " << nodo_actual->cancion->getPath() << "." << endl;
                 return nodo_actual->cancion;
             }
             nodo_actual = nodo_actual->siguiente;
@@ -150,12 +150,13 @@ struct ListaCancionesStore
                 return;
             }
         }
-        cout << "\n\tLISTA DE CANCIONES " << endl;
+        cout << "\n\t \"Lista de Canciones\"" << endl;
 
         while (nodo_actual != NULL)
         {
-            cout << "Id: " << nodo_actual->id << ", Nombre: " << nodo_actual->cancion->getNombre() << ", Path: " << nodo_actual->cancion->getPath() << endl;
+            cout << nodo_actual->id << ". " << nodo_actual->cancion->getNombre() << "- " << nodo_actual->cancion->getPath() << "." << endl;
             nodo_actual = nodo_actual->siguiente;
         }
+        cout << "\n\tFin" << endl;
     }
 };

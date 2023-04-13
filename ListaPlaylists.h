@@ -104,7 +104,7 @@ struct ListaPlaylists
     }
 
     // Funcion...
-    void listarPlayList()
+    void recorrerListaDePlayList()
     {
         NodoPlayList *nodo_actual = cabeza;
 
@@ -113,7 +113,7 @@ struct ListaPlaylists
             cout << "No hay playlist registradas" << endl;
             return;
         }
-        cout << "\n\tLISTA DE PLAYLIST'S " << endl;
+        cout << "\n\t \"Lista de Playlists\" " << endl;
 
         while (nodo_actual != NULL)
         {

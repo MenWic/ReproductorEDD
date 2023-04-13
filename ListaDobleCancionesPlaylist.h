@@ -71,14 +71,14 @@ struct ListaDobleCancionesPlaylist
         }
 
         delete actual;
-        cout << "Se elimino la cancion." << endl;
+        cout << "Se elimino la cancion" << endl;
     }
 
     void imprimirCanciones()
     {
         NodoDobleCancion *actual = cabeza;
-        cout << "\n\t Canciones en la Playlist " << endl
-             << "Id. Nombre - Descrip." << endl;
+        cout << "\n\t \"Canciones en la Playlist\" " << endl
+             << "Formato: Id. Nombre - Descripcion." << endl;
 
         while (actual != NULL)
         {
@@ -86,6 +86,77 @@ struct ListaDobleCancionesPlaylist
             actual = actual->siguiente;
         }
 
+        cout << "\n\tFin" << endl;
+    }
+
+    void reproducirNormal()
+    {
+        NodoDobleCancion *actual = cabeza;
+        int reproducirDeNUevo = 0;
+
+        while (actual != NULL)
+        {
+            cout << "Reproduciendo" << actual->id << ". " << actual->cancion->getNombre() << " - " << actual->cancion->getPath() << "." << endl;
+
+            pause();
+            cout << "1.Reproducir siguiente 2.Reproducir anterior" << endl;
+            cin >> reproducirDeNUevo;
+
+            //ARREGLAR A SWITCH
+            if (reproducirDeNUevo == 1)
+            {
+                actual = actual->siguiente;
+            }
+            else
+            {
+                actual = actual->anterior;
+            }
+        }
+
         cout << endl;
     }
+
+    void reproducirInfinita()
+    {
+        NodoDobleCancion *actual = cabeza;
+        int reproducirDeNUevo = 0;
+        while (actual != NULL)
+        {
+            cout << "Reproduciendo" << actual->id << ". " << actual->cancion->getNombre() << " - " << actual->cancion->getPath() << "." << endl;
+            pause();
+
+            cout << "1.Reproducir siguiente 2.Reproducir anterior" << endl;
+            cin >> reproducirDeNUevo;
+            if (reproducirDeNUevo == 1)
+            {
+                actual = actual->siguiente;
+            }
+            else
+            {
+                actual = actual->anterior;
+            }
+
+            if (actual == NULL)
+            {
+                cout << "La Play list acabo\n-1.Si Desea reproducir la play list nuevamente" << endl;
+                cin >> reproducirDeNUevo;
+                if (reproducirDeNUevo == -1)
+                {
+                    actual = cabeza;
+                }
+                else
+                {
+                    return;
+                }
+            }
+        }
+        cout << endl;
+    }
+
+    void pause()
+{
+	cout << "Pulsa una tecla para continuar...";
+	getwchar();
+	getwchar();
+}
 };

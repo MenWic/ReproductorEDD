@@ -99,10 +99,10 @@ struct ListaDobleCancionesPlaylist
             cout << "Reproduciendo" << actual->id << ". " << actual->cancion->getNombre() << " - " << actual->cancion->getPath() << "." << endl;
 
             pause();
-            cout << "1.Reproducir siguiente 2.Reproducir anterior" << endl;
+            cout << "\t1.Reproducir siguiente\t2.Reproducir anterior" << endl;
             cin >> reproducirDeNUevo;
 
-            //ARREGLAR A SWITCH
+            // ARREGLAR A SWITCH
             if (reproducirDeNUevo == 1)
             {
                 actual = actual->siguiente;
@@ -112,22 +112,25 @@ struct ListaDobleCancionesPlaylist
                 actual = actual->anterior;
             }
         }
-
+        cout << "Fin reproduccion" << endl;
         cout << endl;
     }
 
     void reproducirInfinita()
     {
         NodoDobleCancion *actual = cabeza;
-        int reproducirDeNUevo = 0;
+        // char reproducirDeNUevo;
+        int opcReproduccion;
+
         while (actual != NULL)
         {
-            cout << "Reproduciendo" << actual->id << ". " << actual->cancion->getNombre() << " - " << actual->cancion->getPath() << "." << endl;
+            cout << "Reproduciendo: " << actual->id << ". " << actual->cancion->getNombre() << " - " << actual->cancion->getPath() << "." << endl;
             pause();
 
-            cout << "1.Reproducir siguiente 2.Reproducir anterior" << endl;
-            cin >> reproducirDeNUevo;
-            if (reproducirDeNUevo == 1)
+            cout << "\t1.Reproducir siguiente\t2.Reproducir anterior" << endl;
+            cin >> opcReproduccion;
+
+            if (opcReproduccion == 1)
             {
                 actual = actual->siguiente;
             }
@@ -138,14 +141,16 @@ struct ListaDobleCancionesPlaylist
 
             if (actual == NULL)
             {
-                cout << "La Play list acabo\n-1.Si Desea reproducir la play list nuevamente" << endl;
-                cin >> reproducirDeNUevo;
-                if (reproducirDeNUevo == -1)
+                cout << "La Play list acabo, se termino... Desea repetir? (-1)?" << endl;
+                cin >> opcReproduccion;
+
+                if (opcReproduccion == -1)
                 {
                     actual = cabeza;
                 }
                 else
                 {
+                    cout << "Fin reproduccion" << endl;
                     return;
                 }
             }
@@ -154,9 +159,9 @@ struct ListaDobleCancionesPlaylist
     }
 
     void pause()
-{
-	cout << "Pulsa una tecla para continuar...";
-	getwchar();
-	getwchar();
-}
+    {
+        cout << "Pulsa una tecla para continuar...";
+        getwchar();
+        getwchar();
+    }
 };

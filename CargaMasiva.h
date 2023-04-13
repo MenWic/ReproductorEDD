@@ -17,30 +17,26 @@ void leerArchivoXML()
     XMLDocument doc;//Documento a leer
     string xmlPath; //Direccion/Path
 
-    cout << "Ingrese direccion del archivo de carga en formato XM\nSi su archivo esta en la raiz del proyecto, ingrese el [nombre].xml" << std::endl;
+    cout << "Ingrese direccion del archivo de carga en formato XM\nSi su archivo esta en la raiz del proyecto, ingrese el \"[nombre].xml\"" << endl;
     cin.ignore();
     getline(cin, xmlPath);         // lectura del path
     doc.LoadFile(xmlPath.c_str()); // Captura del texto
 
     if (doc.Error())
     { // Verifica si hay un error del archivo
-        std::cout << "Error al carga el archivo XML, path: " << xmlPath << std::endl;
+        cout << "Error al cargar el archivo XML, path: " << xmlPath << endl;
         return;
     }
 
     XMLElement *insert = doc.FirstChildElement("Insertar"); //<Insertar> </Insertar>
-    // int vueltasInsert = 0;
 
     while (insert != nullptr) // Recorre los insert
     {
-        // vueltasInsert++;
-        std::cout << "Cancioens: " << std::endl;
+        cout << "Canciones leidas: " << endl;
         XMLElement *cancioN = insert->FirstChildElement("cancion");
-        // int vCan = 0; // Saber cant iter.
 
         while (cancioN != nullptr)
         {
-            // vCan++;
             string path;
             string nombre;
             string posId;
@@ -54,15 +50,15 @@ void leerArchivoXML()
             }
             if (!nombre.empty() && !path.empty())
             {
-                std::cout << "\tNombre: " << nombre << "\tPath: " << path << std::endl;
+                cout << "\tNombre: " << nombre << ", Path: " << path << endl;
             }
             else
             {
-                std::cout << "Todos los parametros deben de estar llenos " << std::endl;
+                cout << "Todos los parametros deben de estar llenos porfavor" << endl;
             }
             cancioN = cancioN->NextSiblingElement("cancion");
         }
-        // listaCanciones->imprimirPos();
+
         XMLElement *playlist = insert->FirstChildElement("Lista");
 
         while (playlist != nullptr)
@@ -75,30 +71,32 @@ void leerArchivoXML()
             XMLElement *canciones = playlist->FirstChildElement("Canciones");
 
             if (!nombrePlaylist.empty() && !descripcionPlaylist.empty())
-            { // Agrega Lista sin canciones
-                std::cout << "Nueva Lista de Reproduccion" << std::endl;
-                std::cout << "Nombre: " << nombrePlaylist << "\tDescripcion: " << descripcionPlaylist << std::endl;
+            { 
+                // Agrega una playList sin canciones
+                cout << "Nueva Lista de Reproduccion:" << endl;
+                cout << "Nombre: " << nombrePlaylist << "\tDescripcion: " << descripcionPlaylist << endl;
 
                 if (canciones != nullptr)
-                { // Agrega playlist con canciones
-                    std::cout << "Posicion de canciones" << std::endl;
+                { 
+                    // Agrega playlist con canciones
+                    cout << "Posicion de canciones:" << endl;
                     XMLElement *cancionesPlaylist = playlist->FirstChildElement("pos");
 
                     while (cancionesPlaylist != nullptr)
                     {
-                        cout << cancionesPlaylist->GetText() << "-";
+                        cout << cancionesPlaylist->GetText() << ", ";
                         cancionesPlaylist = cancionesPlaylist->NextSiblingElement("pos");
                     }
                     cout << endl;
                 }
                 else
                 {
-                    cout << "No hay mas canciones" << endl;
+                    cout << "Fin lectura de canciones" << endl;
                 }
             }
             else
             {
-                std::cout << "Hay uno o mas campos vacios" << std::endl;
+                cout << "Hay uno o mas campos vacios" << endl;
             }
             playlist = playlist->NextSiblingElement("Lista");
         }
@@ -109,22 +107,22 @@ void leerArchivoXML()
 
     while (eliminar != nullptr)
     {
-        std::cout << "ELiminar" << std::endl;
+        cout << "Eliminar leidos:" << endl;
         XMLElement *canciones = eliminar->FirstChildElement("cancion");
 
         while (canciones != nullptr)
         {
-            std::cout << "\tCancion" << std::endl;
+            cout << "\tCanciones leidas:" << endl;
             XMLElement *id = canciones->FirstChildElement("id");
             XMLElement *name = canciones->FirstChildElement("Nombre");
 
             if (id != nullptr)
             {
-                std::cout << "\t\tId: " << id->GetText() << std::endl;
+                std::cout << "\t\tId: " << id->GetText() << endl;
             }
             if (name != nullptr)
             {
-                std::cout << "\t\tNombre: " << name->GetText() << std::endl;
+                std::cout << "\t\tNombre: " << name->GetText() << endl;
             }
             canciones = canciones->NextSiblingElement("cancion");
         }

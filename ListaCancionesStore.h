@@ -63,11 +63,11 @@ struct ListaCancionesStore
                 nodo_anterior->siguiente = nodo_actual->siguiente;
             }
             delete nodo_actual;
-            cout << "Se elimino la cancion";
+            cout << "Se elimino la cancion...";
         }
         else
         {
-            cout << "No se enontro la cancion a borrar";
+            cout << "No se enontro la cancion a eliminar...";
         }
     }
 
@@ -77,29 +77,37 @@ struct ListaCancionesStore
         NodoCancion *nodo_actual = cabeza;
         NodoCancion *nodo_anterior = NULL;
 
-        while (nodo_actual != NULL && nodo_actual->id != index)
-        { // Mientras el nodo actual no sea NULL, el nombre no coincida...
-            nodo_anterior = nodo_actual;
-            nodo_actual = nodo_actual->siguiente;
-        }
-
         if (nodo_actual != NULL)
         {
-            if (nodo_anterior == NULL)
+            while (nodo_actual != NULL && nodo_actual->id != index)
+            { // Mientras el nodo actual no sea NULL, el nombre no coincida...
+                nodo_anterior = nodo_actual;
+                nodo_actual = nodo_actual->siguiente;
+            }
+
+            if (nodo_actual != NULL)
             {
-                cabeza = nodo_actual->siguiente;
+                if (nodo_anterior == NULL)
+                {
+                    cabeza = nodo_actual->siguiente;
+                }
+                else
+                {
+                    nodo_anterior->siguiente = nodo_actual->siguiente;
+                }
+                delete nodo_actual;
+                cout << "Se elimino la cancion.";
             }
             else
             {
-                nodo_anterior->siguiente = nodo_actual->siguiente;
+                cout << "No se enontro la cancion a borrar";
             }
-            delete nodo_actual;
-            cout << "Se elimino la cancion.";
         }
         else
         {
-            cout << "No se enontro la cancion a borrar";
+            cout << "No hay canciones en la Store";
         }
+        getwchar();
     }
 
     // Metodo que recorre la lista de canciones comprando por string nombre
@@ -146,10 +154,11 @@ struct ListaCancionesStore
         if (nodo_actual == NULL)
         {
             {
-                cout << "No hay canciones registradas" << endl;
+                cout << "\nNo hay canciones registradas" << endl;
                 return;
             }
         }
+
         cout << "\n\t \"Lista de Canciones\"" << endl;
 
         while (nodo_actual != NULL)
@@ -157,6 +166,6 @@ struct ListaCancionesStore
             cout << nodo_actual->id << ". " << nodo_actual->cancion->getNombre() << "- " << nodo_actual->cancion->getPath() << "." << endl;
             nodo_actual = nodo_actual->siguiente;
         }
-        cout << "\n\tFin" << endl;
+        cout << "\tFin" << endl;
     }
 };

@@ -60,7 +60,7 @@ int main()
 	do
 	{
 		//system("cls");
-		cout << "\t- - - - - - - - - - - - - -" << endl;
+		cout << "\n\n\t- - - - - - - - - - - - - -" << endl;
 		cout << "\t + R E P R O D U C T O R +" << endl;
 		cout << "\t- - - - - - - - - - - - - -" << endl
 			 << endl;
@@ -78,27 +78,23 @@ int main()
 		case '1':
 			system("cls");
 			menuCanciones(listaCanciones);
-			//pausa();
 			break;
 
 		case '2':
 			system("cls");
 			menuPlaylists(listaPlaylists, listaCanciones);
-			//pausa();
 			break;
 
 		case '3':
 			system("cls");
 			cout << "Nota: Fase aun en desarrollo" << endl;
 			menuReproduccion(listaPlaylists);
-			//pausa();
 			break;
 
 		case '4':
 			system("cls");
 			cout << "Nota: Fase aun en desarrollo" << endl;
 			menuCargaMasiva();
-			//pausa();
 			break;
 
 		case '5':
@@ -123,7 +119,7 @@ int main()
 void menuCanciones(ListaCancionesStore *listaCanciones)
 {
 	char opc;
-	//system("cls"); 	//BORRAR LOS CLS PREVIO A CADA MENU
+
 	cout << "\t- - - - - -" << endl;
 	cout << "\t CANCIONES " << endl;
 	cout << "\t- - - - - -" << endl
@@ -142,28 +138,28 @@ void menuCanciones(ListaCancionesStore *listaCanciones)
 		system("cls");
 	case '1':
 		insertarCancionAStore(listaCanciones);
-		//pausa();
 		break;
 	case '2':
 		eliminarCancionDeStore(listaCanciones);
-		//pausa();
 		break;
 	case '3':
 		buscarCancionPorNombre(listaCanciones);
-		pausa();
 		break;
 	case '4':
+		system("cls");
+		cout << "\n\t * LISTAR CANCIONOES *" << endl;
 		listaCanciones->listarCanciones();
-		//pausa();
+		pausa();
+		getwchar();
 		break;
 	case '5':
-		//pausa();
 		break;
 
 	default:
 		cout << "La opcion ingresada no es valida..." << endl;
 		break;
 	}
+	// pausa();
 }
 
 // Funcion insertar canciones a Lista de Canciones (store)
@@ -195,6 +191,7 @@ void insertarCancionAStore(ListaCancionesStore *listaCanciones)
 		}
 	}
 	listaCanciones->agregarCancion(nombre, path);
+	pausa();
 }
 
 // Funcion para elimminar canciones de la lista de canciones (store)
@@ -206,49 +203,52 @@ void eliminarCancionDeStore(ListaCancionesStore *listaCanciones)
 
 	system("cls");
 	cout << "\n\t * ELIMINAR CANCION *" << endl;
-	listaCanciones->listarCanciones(); // Mostrar canciones para facilitar datos previo a eliminacion
+	// listaCanciones->listarCanciones(); // Mostrar canciones para facilitar datos previo a eliminacion
 
-	cout << "Seleccionar cancion a eliminar" << endl;
+	cout << "\nComo eliminara la cancion?" << endl;
 	cout << "1. Borrar por nombre" << endl
 		 << "2. Borrar por id" << endl;
+	cout << "3. Regresar al Menu" << endl;
+
+	cout << "Ingrese su opcion: ";
 	cin >> x;
 
 	switch (x)
 	{
 	case '1':
-		// system("cls");
-		cout << "Ingrese el nombre de la cancion: ";
-		// cin >> nombre;
+		cout << "\nIngrese el nombre de la cancion: ";
 		cin.ignore();
 		getline(cin, nombre);
 
 		if (listaCanciones->buscarCancionPorNombre(nombre) != NULL)
 		{
-			cout << "Confirmar eliminacion (y/Y): ";
+			cout << "Confirmar eliminacion (s/S): ";
 			cin >> confirmation;
 
-			if (confirmation == 'y' || 'Y')
+			if (confirmation == 's' || 'S')
 			{
 				listaCanciones->eliminarCancionPorNombre(nombre);
-				// Ya se elimino, el mensaje esta en el metodo eliminarCancionPorNombre()
 			}
 			else
 			{
 				cout << "No se elimino la cancion" << endl;
 			}
 		}
+		pausa();
+		getwchar();
 		break;
 
 	case '2':
-		cout << "Ingrese el id de la cancion: ";
+		cout << "\nIngrese el id de la cancion: ";
 		cin >> index;
 
+		//Debe ser INT
 		if (listaCanciones->buscarCancionPorIndex(index) != NULL)
 		{
-			cout << "Confirmar eliminacion (1): ";
+			cout << "Confirmar eliminacion (s/S): ";
 			cin >> confirmation;
 
-			if (confirmation == '1')
+			if (confirmation == 's' || 'S')
 			{
 				listaCanciones->eliminarCancionPorIndex(index);
 				cout << "Se elimino la cancion" << endl;
@@ -257,12 +257,21 @@ void eliminarCancionDeStore(ListaCancionesStore *listaCanciones)
 			{
 				cout << "No se elimino la cancion" << endl;
 			}
+			pausa();
+		} else {
+			cout << "No se encontro la cancion" << endl;
+			pausa();
 		}
+		getwchar();
+		break;
+
+	case '3':
 		break;
 
 	default:
 		cout << "La opcion ingresada no es valida..." << endl;
 		break;
+		pausa();
 	}
 }
 
@@ -274,6 +283,7 @@ void buscarCancionPorNombre(ListaCancionesStore *listaCanciones)
 
 	while (bandera)
 	{
+		system("cls");
 		cout << "\n\t * BUSCAR CANCION *" << endl;
 		cout << "Ingrese el nombre de la cancion" << endl;
 		cin.ignore();
@@ -289,6 +299,7 @@ void buscarCancionPorNombre(ListaCancionesStore *listaCanciones)
 		}
 	}
 	listaCanciones->buscarCancionPorNombre(nombre);
+	pausa();
 }
 
 /*********************************
@@ -408,7 +419,7 @@ void actualizarPlaylist(ListaPlaylists *listaPlaylists)
 	listaPlaylists->recorrerListaDePlayList();
 	cout << "Ingrese el Id de la Playlist que desea actualizar: " << endl;
 	cin >> idPLayList;
-	cout << "Ingrese los nuevos datos para la Playlist seleccionada";
+	cout << "Ingrese los nuevos datos para la Playlist seleccionada" << endl;
 	cout << "Nuevo nombre de Playlist: ";
 	cin.ignore();
 	getline(cin, nuevoNombrePlaylist);
@@ -608,7 +619,7 @@ void menuCargaMasiva()
 	case '2':
 	{
 		system("cls");
-		//pausa();
+		// pausa();
 		break;
 	}
 	break;
@@ -626,7 +637,7 @@ void pausa()
 {
 	cout << "Pulsa una tecla para continuar...";
 	getwchar();
-	getwchar();
+	// getwchar();
 }
 
 // No fuciono el path relativo ni absoluto, no reproduce el archivo

@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Insertar>
 	<cancion>
-		<Nombre>can1</Nombre>
-		<path>asdasdasd</path>
+		<Nombre>Rolon1</Nombre>
+		<path>C:/Pedro/Juan/SusRollos/algo/CumbionBienLoco.wav</path>
 	</cancion>
 	<cancion>
-		<Nombre>can2</Nombre>
-		<path>asdasdasdasd</path>
+		<Nombre>ROla2</Nombre>
+		<path>F:/Documentos/Pedegree/prueba.wav</path>
 	</cancion>
 	<cancion>
-		<Nombre>can3</Nombre>
-		<path>asdasdasd</path>
+		<Nombre>Cancionaza3</Nombre>
+		<path>C://Pedro//Juan//rola.wav</path>
 	</cancion>
 	<cancion>
-		<Nombre>can4</Nombre>
-		<path>asdasdasd</path>
+		<Nombre>Song4</Nombre>
+		<path>"C:/Documentos/Probando/sonidito.wav"</path>
 	</cancion>
 	<cancion>
-		<Nombre>can5</Nombre>
-		<path>asdasdasd</path>
+		<Nombre>ROlon5</Nombre>
+		<path>probaaaaando</path>
 	</cancion>
-	<cancion>
-		<Nombre>can6</Nombre>
-		<path>asdasd</path>
-	</cancion>
+</Insertar>
+<Insertar>
+   <Lista>
+       <Nombre> nombreCancion </Nombre>
+       <Descripcion> pathCancion </Descripcion>
+   </Lista>
 </Insertar>
